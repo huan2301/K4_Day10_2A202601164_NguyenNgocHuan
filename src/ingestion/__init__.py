@@ -1,3 +1,4 @@
 from .cleaning import build_and_save_clean_dataset, build_clean_dataframe, build_embedding_text
 from .corruption import corrupt_clean_dataframe
 from .crossref import PaperRecord, fetch_source_records, load_raw_records, parse_crossref_payload
+from .recovery import build_recovery_evidence, repair_clean_dataset_from_raw

@@ -59,3 +59,12 @@ parameters, and its before/after row count in `data/results/corruption_log.json`
 Corrupted embedding text is rebuilt with the same canonical field order as the
 baseline (`title`, authors, categories, published date, abstract), so measured
 differences come from logged corruption rather than schema drift.
+
+## Recovery
+
+`repair_clean_dataset_from_raw` loads the trusted parsed raw snapshot and runs
+the canonical cleaner again. It never copies baseline clean data and never
+edits corrupted rows in place. `build_recovery_evidence` connects every event
+in the corruption log to its DOI in raw/repaired data and verifies that dropped
+records, blank summaries, noise, truncated titles, stale dates and duplicates
+were restored. The evidence also stores the SHA-256 of the recovery source.
