@@ -5,8 +5,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from core.config import load_settings
-from core.utils import read_json, write_csv, write_json
-from ingestion.cleaning import build_clean_dataframe
+from core.utils import read_json, write_json
+from ingestion.cleaning import build_and_save_clean_dataset
 from ingestion.crossref import load_raw_records, parse_crossref_payload
 
 
@@ -18,6 +18,7 @@ def validate_raw_to_clean(
     parsed_output_path: Path,
     clean_json_path: Path,
     clean_csv_path: Path,
+    cleaning_report_path: Path,
 ) -> dict[str, int]:
     """Run the deterministic CP1 sample from a Crossref payload to clean artifacts."""
     records = parse_crossref_payload(read_json(sample_payload_path))
@@ -25,9 +26,13 @@ def validate_raw_to_clean(
 
     # Reload the serialized boundary as a recovery-path contract check.
     reloaded = load_raw_records(parsed_output_path)
-    clean_df = build_clean_dataframe(reloaded, SAMPLE_RUN_DATE)
-    write_json(clean_json_path, clean_df.to_dict(orient="records"))
-    write_csv(clean_df, clean_csv_path)
+    clean_df = build_and_save_clean_dataset(
+        reloaded,
+        SAMPLE_RUN_DATE,
+        csv_path=clean_csv_path,
+        json_path=clean_json_path,
+        report_path=cleaning_report_path,
+    )
 
     assert len(records) == 3, "Parser must deduplicate the repeated DOI."
     assert len(clean_df) == 2, "Cleaner must reject the missing-abstract record."
@@ -47,6 +52,7 @@ def main() -> None:
         parsed_output_path=paths.project_dir / "data" / "raw" / "crossref_sample_records.json",
         clean_json_path=paths.project_dir / "data" / "clean" / "papers_clean_sample.json",
         clean_csv_path=paths.project_dir / "data" / "clean" / "papers_clean_sample.csv",
+        cleaning_report_path=paths.project_dir / "data" / "clean" / "cleaning_report_sample.json",
     )
     print(f"CP1 raw -> clean validation passed: {result}")
 

@@ -24,6 +24,12 @@ Authors and categories are normalized and deduplicated while preserving order.
 Missing authors become `Unknown` in `authors_joined`; missing categories become
 `Uncategorized` in `categories_joined` and `primary_category`.
 
+Cleaning records its audit information in `DataFrame.attrs["cleaning_report"]`.
+When `report_path` is supplied, the same payload is written as JSON with input,
+output and filtered counts plus each rejected source index, paper ID and reason.
+The supported reasons are `missing_paper_id`, `missing_title`,
+`missing_summary`, `invalid_published`, and `duplicate_paper_id`.
+
 `age_days` is the non-negative number of UTC calendar days from `published` to
 the pipeline run date. `text_for_embedding` combines title, joined authors,
 joined categories, publication date, and abstract with labeled lines.
