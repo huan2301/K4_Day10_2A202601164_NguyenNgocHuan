@@ -5,7 +5,7 @@
 |---|---:|---:|---:|
 | samples | 24 | 24 | 24 |
 | retrieval_hit_rate | 1.0000 | 0.8333 | 1.0000 |
-| mean_token_f1 | 1.0000 | 0.8370 | 1.0000 |
+| mean_token_f1 | 1.0000 | 0.8333 | 1.0000 |
 | judge_accuracy | 1.0000 | 0.8333 | 1.0000 |
 | mean_judge_score | 5 | 4.3333 | 5 |
 
