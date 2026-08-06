@@ -1,0 +1,51 @@
+{
+  "recovery_source": "D:\\AITHUCCHIEN\\LABS\\K4_Day10_Nemo_Pipeline_Observability\\data\\raw\\crossref_records.json",
+  "recovery_source_sha256": "e36e56305037458857b1f1afa50e18ab392eca3a04fc785a7f740011cf133094",
+  "raw_record_count": 24,
+  "repaired_record_count": 24,
+  "all_checks_passed": true,
+  "checks": [
+    {
+      "corruption_type": "drop_frozen_test_record",
+      "paper_id": "10.2118/234689-pa",
+      "passed": true,
+      "repaired_row_count": 1,
+      "dropped_record_restored": true
+    },
+    {
+      "corruption_type": "blank_summary",
+      "paper_id": "10.1007/s10278-026-02086-9",
+      "passed": true,
+      "repaired_row_count": 1,
+      "summary_chars": 1172
+    },
+    {
+      "corruption_type": "inject_embedding_noise",
+      "paper_id": "10.21203/rs.3.rs-10178277/v1",
+      "passed": true,
+      "repaired_row_count": 1,
+      "noise_removed": true
+    },
+    {
+      "corruption_type": "truncate_title",
+      "paper_id": "10.2196/preprints.106157",
+      "passed": true,
+      "repaired_row_count": 1,
+      "title_matches_raw": true
+    },
+    {
+      "corruption_type": "stale_publication_date",
+      "paper_id": "10.21079/11681/50309",
+      "passed": true,
+      "repaired_row_count": 1,
+      "published_matches_raw": true
+    },
+    {
+      "corruption_type": "duplicate_row",
+      "paper_id": "10.1007/s10278-026-02086-9",
+      "passed": true,
+      "repaired_row_count": 1,
+      "duplicate_removed": true
+    }
+  ]
+}

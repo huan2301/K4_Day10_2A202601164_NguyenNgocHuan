@@ -2,14 +2,40 @@ from __future__ import annotations
 
 from collections import Counter
 from datetime import datetime
-
+from html import unescape
 from pathlib import Path
+import re
 from typing import Any
 
 import pandas as pd
 
 from core.utils import normalize_whitespace, write_csv, write_json
 from ingestion.crossref import PaperRecord
+
+
+def _normalize_text(value: Any) -> str:
+    """Normalize whitespace/entities and defensively remove source markup."""
+    without_markup = re.sub(r"<[^>]+>", " ", unescape(str(value or "")))
+    return normalize_whitespace(without_markup)
+
+
+def build_embedding_text(
+    title: Any,
+    authors_joined: Any,
+    categories_joined: Any,
+    published: Any,
+    summary: Any,
+) -> str:
+    """Compose the canonical text shared by clean, corrupted and repaired data."""
+    return "\n".join(
+        (
+            f"Title: {_normalize_text(title)}",
+            f"Authors: {_normalize_text(authors_joined)}",
+            f"Categories: {_normalize_text(categories_joined)}",
+            f"Published: {_normalize_text(published)}",
+            f"Abstract: {_normalize_text(summary)}",
+        )
+    )
 
 
 def build_clean_dataframe(
@@ -51,8 +77,8 @@ def build_clean_dataframe(
         )
 
     for source_index, record in enumerate(records):
-        title = normalize_whitespace(str(record.title or ""))
-        summary = normalize_whitespace(str(record.summary or ""))
+        title = _normalize_text(record.title)
+        summary = _normalize_text(record.summary)
         paper_id = normalize_whitespace(str(record.paper_id or "")).lower()
         # Required fields: stable DOI, title, abstract and a valid publication date.
         if not paper_id:
@@ -89,14 +115,12 @@ def build_clean_dataframe(
         authors_joined = ", ".join(authors) or "Unknown"
         categories_joined = ", ".join(categories) or "Uncategorized"
         published_date = published.date().isoformat()
-        text_for_embedding = "\n".join(
-            (
-                f"Title: {title}",
-                f"Authors: {authors_joined}",
-                f"Categories: {categories_joined}",
-                f"Published: {published_date}",
-                f"Abstract: {summary}",
-            )
+        text_for_embedding = build_embedding_text(
+            title,
+            authors_joined,
+            categories_joined,
+            published_date,
+            summary,
         )
         rows.append({
             "paper_id": paper_id,
