@@ -1,0 +1,47 @@
+[
+  {
+    "paper_id": "10.5555/agentic-rag-001",
+    "title": "Agentic Retrieval-Augmented Generation",
+    "summary": "This study presents an agentic retrieval approach for grounded question answering and reliable document selection.",
+    "authors": [
+      "Ada Lovelace",
+      "Grace Hopper"
+    ],
+    "categories": [
+      "Artificial Intelligence",
+      "Information Retrieval"
+    ],
+    "primary_category": "Artificial Intelligence",
+    "published": "2026-07-15",
+    "updated": "2026-07-20",
+    "abs_url": "https://doi.org/10.5555/agentic-rag-001",
+    "pdf_url": "https://example.org/agentic-rag.pdf",
+    "comment": "Example Research Press"
+  },
+  {
+    "paper_id": "10.5555/data-obs-002",
+    "title": "Data Observability for RAG Pipelines",
+    "summary": "This paper studies freshness, completeness, duplication, and recovery signals for production retrieval pipelines.",
+    "authors": [],
+    "categories": [],
+    "primary_category": "Uncategorized",
+    "published": "2026-06-01",
+    "updated": "2026-06-01",
+    "abs_url": "https://doi.org/10.5555/data-obs-002",
+    "pdf_url": "",
+    "comment": "Example Data Journal"
+  },
+  {
+    "paper_id": "10.5555/invalid-no-abstract",
+    "title": "Incomplete record without an abstract",
+    "summary": "",
+    "authors": [],
+    "categories": [],
+    "primary_category": "Uncategorized",
+    "published": "2026-07-01",
+    "updated": "2026-07-01",
+    "abs_url": "https://doi.org/10.5555/invalid-no-abstract",
+    "pdf_url": "",
+    "comment": ""
+  }
+]

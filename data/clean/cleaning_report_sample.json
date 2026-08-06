@@ -1,0 +1,23 @@
+{
+  "input_records": 3,
+  "output_records": 2,
+  "filtered_records": 1,
+  "reason_counts": {
+    "missing_summary": 1
+  },
+  "rejected_records": [
+    {
+      "source_index": 2,
+      "paper_id": "10.5555/invalid-no-abstract",
+      "reason": "missing_summary"
+    }
+  ],
+  "run_date_utc": "2026-08-06T00:00:00+00:00",
+  "required_fields": [
+    "paper_id",
+    "title",
+    "summary",
+    "published"
+  ],
+  "dedupe_key": "paper_id"
+}

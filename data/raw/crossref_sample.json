@@ -1,0 +1,45 @@
+{
+  "status": "ok",
+  "message": {
+    "items": [
+      {
+        "DOI": "10.5555/AGENTIC-RAG-001",
+        "title": ["Agentic Retrieval-Augmented Generation"],
+        "abstract": "<jats:p>This study presents an agentic retrieval approach for grounded question answering and reliable document selection.</jats:p>",
+        "author": [
+          {"given": "Ada", "family": "Lovelace"},
+          {"given": "Grace", "family": "Hopper"}
+        ],
+        "subject": ["Artificial Intelligence", "Information Retrieval"],
+        "published": {"date-parts": [[2026, 7, 15]]},
+        "indexed": {"date-parts": [[2026, 7, 20]]},
+        "URL": "https://doi.org/10.5555/agentic-rag-001",
+        "link": [
+          {"content-type": "application/pdf", "URL": "https://example.org/agentic-rag.pdf"}
+        ],
+        "publisher": "Example Research Press"
+      },
+      {
+        "DOI": "https://doi.org/10.5555/DATA-OBS-002",
+        "title": ["Data Observability for RAG Pipelines"],
+        "abstract": "This paper studies freshness, completeness, duplication, and recovery signals for production retrieval pipelines.",
+        "author": [],
+        "subject": [],
+        "issued": {"date-parts": [[2026, 6]]},
+        "URL": "https://doi.org/10.5555/data-obs-002",
+        "publisher": "Example Data Journal"
+      },
+      {
+        "DOI": "10.5555/agentic-rag-001",
+        "title": ["Duplicate DOI must be removed"],
+        "abstract": "This duplicate record should never appear in the parsed record snapshot.",
+        "published": {"date-parts": [[2026, 7, 15]]}
+      },
+      {
+        "DOI": "10.5555/invalid-no-abstract",
+        "title": ["Incomplete record without an abstract"],
+        "published": {"date-parts": [[2026, 7, 1]]}
+      }
+    ]
+  }
+}
