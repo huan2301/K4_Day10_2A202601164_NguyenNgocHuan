@@ -1,0 +1,68 @@
+{
+  "report_name": "corrupted_quality",
+  "generated_at": "2026-08-06T09:32:06.073393+00:00",
+  "total_rows": 24,
+  "passed": false,
+  "checks": {
+    "row_count": {
+      "passed": true,
+      "observed": 24,
+      "expected": "at least one record"
+    },
+    "required_columns": {
+      "passed": true,
+      "observed": [
+        "abs_url",
+        "age_days",
+        "authors",
+        "authors_joined",
+        "categories",
+        "categories_joined",
+        "comment",
+        "paper_id",
+        "pdf_url",
+        "primary_category",
+        "published",
+        "summary",
+        "summary_chars",
+        "text_for_embedding",
+        "title",
+        "updated"
+      ],
+      "expected": "paper_id, title, summary, published, and age_days are present"
+    },
+    "paper_id_not_null": {
+      "passed": true,
+      "observed": 0,
+      "expected": "zero null or blank paper_id values"
+    },
+    "paper_id_unique": {
+      "passed": false,
+      "observed": 2,
+      "expected": "zero duplicate nonblank paper_id values"
+    },
+    "title_not_null": {
+      "passed": true,
+      "observed": 0,
+      "expected": "zero null or blank title values"
+    },
+    "summary_min_length": {
+      "passed": false,
+      "observed": 2,
+      "expected": "every summary has at least 20 characters"
+    },
+    "age_days_valid": {
+      "passed": true,
+      "observed": 0,
+      "expected": "every age_days value is a non-negative number"
+    },
+    "freshness_threshold": {
+      "passed": false,
+      "observed": {
+        "stale_rows": 1,
+        "threshold_days": 180
+      },
+      "expected": "zero records older than the configured freshness threshold"
+    }
+  }
+}

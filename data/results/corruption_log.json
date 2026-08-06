@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-08-06T09:29:29.043862+00:00",
+  "before_row_count": 24,
+  "after_row_count": 24,
+  "events": [
+    {
+      "type": "drop_frozen_test_record",
+      "paper_ids": [
+        "10.2118/234689-pa"
+      ],
+      "count": 1,
+      "targeted_frozen_test_set": true
+    },
+    {
+      "type": "blank_summary",
+      "paper_ids": [
+        "10.1007/s10278-026-02086-9"
+      ],
+      "previous_summary_chars": 1172,
+      "targeted_frozen_test_set": true
+    },
+    {
+      "type": "inject_embedding_noise",
+      "paper_ids": [
+        "10.21203/rs.3.rs-10178277/v1"
+      ],
+      "noise": "[CORRUPTED NOISE: irrelevant tokens ### 0000]",
+      "targeted_frozen_test_set": true
+    },
+    {
+      "type": "truncate_title",
+      "paper_ids": [
+        "10.2196/preprints.106157"
+      ],
+      "before": "Does retrieval-augmented generation impact medical students\u2019 perceptions of large language models? (Preprint)",
+      "after": "Does retrieval-augmented",
+      "targeted_frozen_test_set": true
+    },
+    {
+      "type": "stale_publication_date",
+      "paper_ids": [
+        "10.20944/preprints202602.0996.v1"
+      ],
+      "published": "2000-01-01",
+      "age_days": 9714,
+      "targeted_frozen_test_set": true
+    },
+    {
+      "type": "duplicate_row",
+      "paper_ids": [
+        "10.1007/s10278-026-02086-9"
+      ],
+      "count": 1,
+      "targeted_frozen_test_set": true
+    }
+  ]
+}
