@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-06T10:02:00.100246+00:00",
+  "generated_at": "2026-08-06T09:54:54.958648+00:00",
   "before_row_count": 24,
   "after_row_count": 24,
   "events": [
@@ -48,11 +48,11 @@
     {
       "type": "stale_publication_date",
       "paper_ids": [
-        "10.21079/11681/50309"
+        "10.20944/preprints202602.0996.v1"
       ],
       "before_row_count": 23,
       "after_row_count": 23,
-      "before_published": "2026-07-01",
+      "before_published": "2026-02-12",
       "after_published": "2000-01-01",
       "age_days": 9714,
       "targeted_frozen_test_set": true
