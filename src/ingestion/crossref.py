@@ -58,6 +58,10 @@ def _normalize_doi(value: Any) -> str:
     return doi.strip()
 
 
+def _strip_markup(value: Any) -> str:
+    return normalize_whitespace(re.sub(r"<[^>]+>", " ", unescape(str(value or ""))))
+
+
 def parse_crossref_payload(payload: dict) -> list[PaperRecord]:
     """Parse a Crossref works payload into DOI-keyed ``PaperRecord`` objects.
 
@@ -74,10 +78,10 @@ def parse_crossref_payload(payload: dict) -> list[PaperRecord]:
         if not isinstance(item, dict):
             continue
         doi = _normalize_doi(item.get("DOI"))
-        title = normalize_whitespace(unescape(str(_first(item.get("title")))))
+        title = _strip_markup(_first(item.get("title")))
         if not doi or not title or doi in seen:
             continue
-        abstract = re.sub(r"<[^>]+>", " ", unescape(str(item.get("abstract", ""))))
+        abstract = _strip_markup(item.get("abstract"))
         authors = []
         for author in item.get("author", []) or []:
             name = normalize_whitespace(" ".join(filter(None, [author.get("given"), author.get("family")])))
@@ -95,7 +99,7 @@ def parse_crossref_payload(payload: dict) -> list[PaperRecord]:
         records.append(PaperRecord(
             paper_id=doi,
             title=title,
-            summary=normalize_whitespace(abstract),
+            summary=abstract,
             authors=authors,
             categories=categories,
             primary_category=categories[0] if categories else "Uncategorized",

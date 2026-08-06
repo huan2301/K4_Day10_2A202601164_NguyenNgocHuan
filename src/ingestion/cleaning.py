@@ -2,13 +2,21 @@ from __future__ import annotations
 
 from collections import Counter
 from datetime import datetime
+from html import unescape
 from pathlib import Path
+import re
 from typing import Any
 
 import pandas as pd
 
 from core.utils import normalize_whitespace, write_csv, write_json
 from ingestion.crossref import PaperRecord
+
+
+def _normalize_text(value: Any) -> str:
+    """Normalize whitespace/entities and defensively remove source markup."""
+    without_markup = re.sub(r"<[^>]+>", " ", unescape(str(value or "")))
+    return normalize_whitespace(without_markup)
 
 
 def build_clean_dataframe(
@@ -50,8 +58,8 @@ def build_clean_dataframe(
         )
 
     for source_index, record in enumerate(records):
-        title = normalize_whitespace(str(record.title or ""))
-        summary = normalize_whitespace(str(record.summary or ""))
+        title = _normalize_text(record.title)
+        summary = _normalize_text(record.summary)
         paper_id = normalize_whitespace(str(record.paper_id or "")).lower()
         # Required fields: stable DOI, title, abstract and a valid publication date.
         if not paper_id:

@@ -19,6 +19,8 @@ list, that every object has all `PaperRecord` fields, and that `authors` and
 Required fields are `paper_id`, `title`, `summary`, and a parseable publication
 date. A row missing any of them is removed. Whitespace is normalized, dates are
 stored as ISO `YYYY-MM-DD`, and duplicate `paper_id` values are removed.
+Crossref/JATS markup and HTML entities are removed from title and summary before
+they are handed to the index or test-set builders.
 
 Authors and categories are normalized and deduplicated while preserving order.
 Missing authors become `Unknown` in `authors_joined`; missing categories become
