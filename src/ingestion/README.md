@@ -19,6 +19,8 @@ list, that every object has all `PaperRecord` fields, and that `authors` and
 Required fields are `paper_id`, `title`, `summary`, and a parseable publication
 date. A row missing any of them is removed. Whitespace is normalized, dates are
 stored as ISO `YYYY-MM-DD`, and duplicate `paper_id` values are removed.
+Crossref/JATS markup and HTML entities are removed from title and summary before
+they are handed to the index or test-set builders.
 
 Authors and categories are normalized and deduplicated while preserving order.
 Missing authors become `Unknown` in `authors_joined`; missing categories become
@@ -45,3 +47,24 @@ Run from the project root with the virtual-environment interpreter:
 The command parses `data/raw/crossref_sample.json`, checks the serialized raw
 recovery boundary, writes sample CSV/JSON artifacts under `data/clean/`, and
 validates null, duplicate, date, embedding-text, and `age_days` rules.
+
+## Controlled corruption
+
+`corrupt_clean_dataframe` copies the baseline dataframe before changing it and
+targets document IDs from the frozen test set. It drops one record, blanks one
+summary, injects embedding noise, truncates one title, makes one publication
+date stale, and adds one duplicate. Every event records affected paper IDs,
+parameters, and its before/after row count in `data/results/corruption_log.json`.
+
+Corrupted embedding text is rebuilt with the same canonical field order as the
+baseline (`title`, authors, categories, published date, abstract), so measured
+differences come from logged corruption rather than schema drift.
+
+## Recovery
+
+`repair_clean_dataset_from_raw` loads the trusted parsed raw snapshot and runs
+the canonical cleaner again. It never copies baseline clean data and never
+edits corrupted rows in place. `build_recovery_evidence` connects every event
+in the corruption log to its DOI in raw/repaired data and verifies that dropped
+records, blank summaries, noise, truncated titles, stale dates and duplicates
+were restored. The evidence also stores the SHA-256 of the recovery source.
