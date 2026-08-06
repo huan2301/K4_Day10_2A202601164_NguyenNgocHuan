@@ -47,3 +47,15 @@ Run from the project root with the virtual-environment interpreter:
 The command parses `data/raw/crossref_sample.json`, checks the serialized raw
 recovery boundary, writes sample CSV/JSON artifacts under `data/clean/`, and
 validates null, duplicate, date, embedding-text, and `age_days` rules.
+
+## Controlled corruption
+
+`corrupt_clean_dataframe` copies the baseline dataframe before changing it and
+targets document IDs from the frozen test set. It drops one record, blanks one
+summary, injects embedding noise, truncates one title, makes one publication
+date stale, and adds one duplicate. Every event records affected paper IDs,
+parameters, and its before/after row count in `data/results/corruption_log.json`.
+
+Corrupted embedding text is rebuilt with the same canonical field order as the
+baseline (`title`, authors, categories, published date, abstract), so measured
+differences come from logged corruption rather than schema drift.

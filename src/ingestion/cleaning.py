@@ -19,6 +19,25 @@ def _normalize_text(value: Any) -> str:
     return normalize_whitespace(without_markup)
 
 
+def build_embedding_text(
+    title: Any,
+    authors_joined: Any,
+    categories_joined: Any,
+    published: Any,
+    summary: Any,
+) -> str:
+    """Compose the canonical text shared by clean, corrupted and repaired data."""
+    return "\n".join(
+        (
+            f"Title: {_normalize_text(title)}",
+            f"Authors: {_normalize_text(authors_joined)}",
+            f"Categories: {_normalize_text(categories_joined)}",
+            f"Published: {_normalize_text(published)}",
+            f"Abstract: {_normalize_text(summary)}",
+        )
+    )
+
+
 def build_clean_dataframe(
     records: list[PaperRecord],
     run_date: datetime,
@@ -96,14 +115,12 @@ def build_clean_dataframe(
         authors_joined = ", ".join(authors) or "Unknown"
         categories_joined = ", ".join(categories) or "Uncategorized"
         published_date = published.date().isoformat()
-        text_for_embedding = "\n".join(
-            (
-                f"Title: {title}",
-                f"Authors: {authors_joined}",
-                f"Categories: {categories_joined}",
-                f"Published: {published_date}",
-                f"Abstract: {summary}",
-            )
+        text_for_embedding = build_embedding_text(
+            title,
+            authors_joined,
+            categories_joined,
+            published_date,
+            summary,
         )
         rows.append({
             "paper_id": paper_id,
