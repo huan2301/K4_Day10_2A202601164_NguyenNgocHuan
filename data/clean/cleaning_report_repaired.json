@@ -4,7 +4,7 @@
   "filtered_records": 0,
   "reason_counts": {},
   "rejected_records": [],
-  "run_date_utc": "2026-08-06T09:25:18.290251+00:00",
+  "run_date_utc": "2026-08-06T10:02:20.424625+00:00",
   "required_fields": [
     "paper_id",
     "title",
