@@ -19,9 +19,9 @@
 | Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao | Trạng thái |
 | --- | --- | --- | --- | --- |
 | Cấu hình và contract pipeline | `src/core/config.py`, `.env`, contract giữa các module | Biến môi trường, yêu cầu artifact của nhóm | Quy ước paths, collection và thứ tự handoff | Hoàn thành rà soát |
-| Baseline orchestration | `src/pipelines/phase1.py`, hàm `main()` | Raw records, clean DataFrame, index, test set, quality/freshness | Clean artifacts, baseline embedding, metrics, answers, report khi tích hợp | Hoàn thành phần code, chờ tích hợp |
-| Corruption/repair orchestration | `src/pipelines/corruption_flow.py`, hàm `main()` | Baseline artifacts, corrupted/repaired DataFrame, test set cố định | Corrupted/repaired artifacts và comparison report khi tích hợp | Hoàn thành phần code, chờ tích hợp |
-| Release và demo checklist | `script/run_phase1.py`, `script/run_corruption_flow.py`, `data/` | Artifact do các module bàn giao | Quy trình chạy, kiểm tra artifact và kịch bản demo | Đã chuẩn bị, chờ chạy end-to-end |
+| Baseline orchestration | `src/pipelines/phase1.py`, hàm `main()` | Raw records, clean DataFrame, index, test set, quality/freshness | Clean artifacts, baseline embedding, metrics, answers và Phase 1 report | Hoàn thành |
+| Corruption/repair orchestration | `src/pipelines/corruption_flow.py`, hàm `main()` | Baseline artifacts, corrupted/repaired DataFrame, test set cố định | Corrupted/repaired artifacts, recovery evidence và comparison report | Hoàn thành |
+| Release và demo checklist | `script/run_phase1.py`, `script/run_corruption_flow.py`, `data/` | Artifact do các module bàn giao | Quy trình chạy, kiểm tra artifact và kịch bản demo | Hoàn thành, chờ commit/push |
 
 Tôi chịu trách nhiệm điều phối luồng dữ liệu và bảo đảm các module giao tiếp đúng contract. Tôi không sở hữu thuật toán parse Crossref, cleaning, embedding, evaluation hoặc observability; các module đó được gọi từ pipeline sau khi thành viên phụ trách bàn giao.
 
@@ -114,21 +114,20 @@ python -m compileall src\pipelines
 
 | Metric/signal | Baseline | Corrupted | Repaired | Nhận xét cá nhân |
 | --- | ---: | ---: | ---: | --- |
-| `retrieval_hit_rate` | Chưa chạy | Chưa chạy | Chưa chạy | Chờ integration để đo bằng cùng test set |
-| `mean_token_f1` | Chưa chạy | Chưa chạy | Chưa chạy | Chờ answers artifact thật |
-| `judge_accuracy` | Chưa chạy | Chưa chạy | Chưa chạy | Chờ evaluator và provider được cấu hình |
-| `mean_judge_score` | Chưa chạy | Chưa chạy | Chưa chạy | Chờ evaluator chạy end-to-end |
-| Quality checks | Chưa chạy | Chưa chạy | Chưa chạy | Chờ module observability bàn giao |
-| Freshness status | Chưa chạy | Chưa chạy | Chưa chạy | Chờ clean dataset có `published` và `age_days` |
+| `retrieval_hit_rate` | 1.0000 | 0.8333 | 1.0000 | Corruption làm giảm retrieval; repair phục hồi baseline |
+| `mean_token_f1` | 1.0000 | 0.7917 | 1.0000 | Câu trả lời giảm chất lượng rồi được phục hồi |
+| `judge_accuracy` | 1.0000 | 0.7917 | 1.0000 | Dùng cùng evaluator heuristic cho ba trạng thái |
+| `mean_judge_score` | 5.0000 | 4.1667 | 5.0000 | Repair phục hồi điểm judge |
+| Quality checks | PASS | FAIL | PASS | Duplicate, summary rỗng và stale date bị phát hiện |
+| Freshness status | FRESH | STALE | FRESH | Repair từ raw snapshot khôi phục freshness |
 
 ### Kết luận từ số liệu
 
-Tại thời điểm viết báo cáo, chưa có số liệu runtime nên tôi chưa kết luận corruption làm giảm metrics hay repair phục hồi metrics.
+Corruption có chủ đích đã làm `retrieval_hit_rate` giảm từ 1.0000 xuống 0.8333 và `mean_token_f1` giảm từ 1.0000 xuống 0.7917. Quality chuyển từ PASS sang FAIL, freshness chuyển từ FRESH sang STALE.
 
-Sau integration, cần chứng minh hai chuỗi bằng chứng:
+Repair được thực hiện từ raw snapshot, không sửa answers hoặc metrics. `recovery_log.json` xác nhận toàn bộ sáu corruption targets đã được khôi phục. Sau repair, tất cả metrics, quality và freshness trở về baseline.
 
-1. Corruption có log → quality/freshness signal thay đổi → retrieval/answer metrics thay đổi.
-2. Repair từ raw snapshot → quality/freshness signal phục hồi → repaired metrics phục hồi một phần hoặc toàn bộ.
+RAGAS được tắt do timeout từ Gemini; evaluator heuristic được bật nhất quán cho baseline, corrupted và repaired. Answers artifacts ghi rõ lý do fallback, do đó phép so sánh vẫn có thể audit.
 
 ## 9. Điều học được và hướng cải thiện
 

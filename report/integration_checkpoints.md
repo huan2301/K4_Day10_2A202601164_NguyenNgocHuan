@@ -1,64 +1,70 @@
 # Integration Checkpoint Log
 
-This log records only results verified from repository artifacts. It is shared checkpoint evidence for the team; final narrative belongs in report/group_report.md.
+This log records only results verified from committed project artifacts. The final narrative belongs in report/group_report.md.
 
 ## CP1 — Raw to clean contract
 
 - **Status:** Pass
 - **Evidence:** data/clean/cleaning_report.json
-- **Input records:** 24
-- **Clean records:** 24
+- **Input / clean records:** 24 / 24
 - **Filtered records:** 0
 - **Duplicate key:** paper_id
-- **Required source fields:** paper_id, title, summary, published
-- **Clean artifact:** data/clean/papers_clean.csv and data/clean/papers_clean.json
+- **Clean artifacts:** data/clean/papers_clean.csv and data/clean/papers_clean.json
 
 ## CP2 — Clean to test set/index
 
 - **Status:** Pass
 - **Clean rows:** 24
-- **Duplicate paper_id:** 0
-- **Empty text_for_embedding:** 0
-- **Evaluation samples:** 18
+- **Duplicate paper_id / empty text_for_embedding:** 0 / 0
+- **Evaluation samples:** 24
 - **Evaluation schema:** id, question_type, question, ground_truth, ground_truth_doc_ids
-- **Ground-truth IDs:** all IDs in data/eval/test_set.json exist in the clean dataset
+- **Ground-truth IDs:** every ground-truth ID occurs in the clean dataset.
 - **Embedding model:** sentence-transformers/all-MiniLM-L6-v2
-- **Baseline collection:** papers-baseline
-- **Indexed documents:** 24
-- **Embedding manifest:** data/embeddings/papers_embeddings.json
-- **Persistence path policy:** the manifest stores data\\chroma relative to the project root so it can be loaded after another team member pulls the repository.
+- **Baseline collection:** papers-baseline, with 24 documents.
+- **Manifest policy:** embedding manifests use data\\chroma relative to the project root.
 
 ## CP3 — Baseline end-to-end release
 
 - **Status:** Pass
-- **Command:** `python script/run_phase1.py`
-- **Artifacts verified:**
-  - `data/results/baseline_metrics.json`
-  - `data/results/baseline_answers.json`
-  - `data/quality/freshness_report.json`
-  - `data/reports/phase1_report.md`
-- **Baseline collection:** `papers-baseline`
-- **Test set:** `data/eval/test_set.json` (giữ cố định cho Phase 2)
-- **Metrics:** xem `data/results/baseline_metrics.json`
-- **Freshness/quality evidence:** xem `data/quality/`
+- **Command:** python script/run_phase1.py
+- **Artifacts:** baseline metrics/answers, baseline quality/freshness, Phase 1 report and demo answers all exist.
+- **Metrics:** retrieval_hit_rate=1.0000; mean_token_f1=1.0000; judge_accuracy=1.0000; mean_judge_score=5.0000.
+- **Quality / freshness:** PASS / FRESH.
+- **Test set:** data/eval/test_set.json is frozen for Phase 2.
 
-## CP4 — Break checklist
+## CP4 — Baseline break checklist
 
-- **Baseline status:** Completed and artifacts verified.
-- **Remaining blocker:** `src/ingestion/corruption.py` còn `NotImplementedError`; Phase 2 chưa thể chạy cho đến khi module corruption được hoàn thiện.
-- **Next step after break:** dùng lại clean dataset, baseline test set và raw snapshot để chạy corruption → evaluate → repair → comparison.
+- **Baseline status:** completed and artifacts verified.
+- **Phase 2 readiness:** corruption implementation, raw snapshot, frozen test set and separate output paths are available.
+- **Scope decision:** do not edit metrics or answers manually; repair must rebuild from the raw snapshot.
 
 ## CP5 — Corruption and repair integration
 
 - **Status:** Pass
-- **Corruption log:** `data/results/corruption_log.json`
-- **Corrupted collection:** `papers-corrupted`
-- **Repaired collection:** `papers-repaired`
-- **Shared test set:** `data/eval/test_set.json`
-- **Baseline preserved:** Yes; baseline hashes unchanged.
-- **Artifacts:** corrupted/repaired clean datasets, manifests, answers, metrics,
-  freshness reports và comparison report đã tồn tại.
+- **Command:** python script/run_corruption_flow.py
+- **Corruption log:** data/results/corruption_log.json records six deterministic, test-set-targeted defects.
+- **Collections:** papers-baseline, papers-corrupted and papers-repaired are separate.
+- **Recovery evidence:** data/results/recovery_log.json has all_checks_passed=true.
 
-## Open blocker
+| Metric/signal | Baseline | Corrupted | Repaired |
+| --- | ---: | ---: | ---: |
+| retrieval_hit_rate | 1.0000 | 0.8333 | 1.0000 |
+| mean_token_f1 | 1.0000 | 0.7917 | 1.0000 |
+| judge_accuracy | 1.0000 | 0.7917 | 1.0000 |
+| mean_judge_score | 5.0000 | 4.1667 | 5.0000 |
+| Data quality | PASS | FAIL | PASS |
+| Freshness | FRESH | STALE | FRESH |
 
-- **Phase 2 blocker:** src/ingestion/corruption.py still raises NotImplementedError; corruption and repair flow cannot be verified until its owner completes the module.
+## CP6 — Release and demo readiness
+
+- **Status:** Pass, pending team commit and push.
+- **Comparison report:** data/reports/corruption_report.md.
+- **Release evidence:** all baseline, corrupted and repaired clean datasets, manifests, answers, metrics, quality/freshness reports and Markdown reports exist.
+- **Demo claim:** corruption reduces both retrieval and answer metrics; repair from the raw snapshot restores the baseline values and passes recovery evidence.
+- **Evaluation limitation:** RUN_RAGAS=0 and SKIP_LLM_JUDGE=1 were used for all three states after Gemini timeouts. RAGAS is recorded as skipped and every answer artifact records the heuristic judge reason, so the comparison remains consistent and auditable.
+
+## Final release checks
+
+- Commit code, data artifacts and this checkpoint log together.
+- Do not commit .env, credentials or secrets.
+- Keep the frozen test set unchanged when demonstrating or re-running the three states.

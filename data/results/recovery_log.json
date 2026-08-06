@@ -1,5 +1,5 @@
 {
-  "recovery_source": "D:\\AITHUCCHIEN\\LABS\\K4_Day10_Nemo_Pipeline_Observability\\data\\raw\\crossref_records.json",
+  "recovery_source": "data\\raw\\crossref_records.json",
   "recovery_source_sha256": "e36e56305037458857b1f1afa50e18ab392eca3a04fc785a7f740011cf133094",
   "raw_record_count": 24,
   "repaired_record_count": 24,

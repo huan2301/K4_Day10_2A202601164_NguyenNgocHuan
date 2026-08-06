@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-08-06T10:02:20.401691+00:00",
+  "freshness_threshold_days": 180,
+  "total_rows": 24,
+  "valid_published_rows": 24,
+  "invalid_published_rows": 0,
+  "latest_published": "2026-07-13",
+  "oldest_published": "2000-01-01",
+  "stale_rows": 1,
+  "invalid_age_rows": 0,
+  "max_age_days": 9714,
+  "min_age_days": 24,
+  "is_fresh": false
+}

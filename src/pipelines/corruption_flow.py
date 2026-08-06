@@ -5,9 +5,8 @@ import pandas as pd
 from core.config import load_settings
 from core.utils import now_utc, read_json, write_csv, write_json
 from evaluation.metrics import evaluate_pipeline
-from ingestion.cleaning import build_clean_dataframe
 from ingestion.corruption import corrupt_clean_dataframe
-from ingestion.crossref import load_raw_records
+from ingestion.recovery import build_recovery_evidence, repair_clean_dataset_from_raw
 from observability.quality import build_freshness_report, run_data_quality_checks
 from observability.reporting import generate_corruption_report
 from retrieval.index import LocalEmbeddingIndex
@@ -40,6 +39,21 @@ def _require_baseline_artifacts(paths) -> None:
         )
 
 
+def _frozen_test_document_ids(test_set_path) -> list[str]:
+    test_set = read_json(test_set_path)
+    document_ids = sorted(
+        {
+            str(document_id).strip()
+            for item in test_set
+            for document_id in item.get("ground_truth_doc_ids", [])
+            if str(document_id).strip()
+        }
+    )
+    if not document_ids:
+        raise RuntimeError("The frozen test set has no ground_truth_doc_ids to target.")
+    return document_ids
+
+
 def main() -> None:
     settings = load_settings()
     paths = settings.paths
@@ -56,12 +70,14 @@ def main() -> None:
         raise RuntimeError("Baseline clean dataset is empty.")
 
     print(f"Baseline clean rows: {len(baseline_df)}")
+    target_paper_ids = _frozen_test_document_ids(paths.eval_testset)
 
     # 2. Corrupt baseline clean data.
     # Hàm này do owner ingestion/cleaning implement.
     corrupted_df = corrupt_clean_dataframe(
         df=baseline_df,
         output_log_path=paths.corruption_log,
+        target_paper_ids=target_paper_ids,
     )
 
     if corrupted_df.empty:
@@ -102,14 +118,25 @@ def main() -> None:
     # 5. Repair từ raw snapshot của baseline.
     # Không fetch Crossref lần mới, vì dữ liệu nguồn mới làm comparison mất công bằng.
     print("Repairing from baseline raw snapshot...")
-    raw_records = load_raw_records(paths.raw_records_json)
-    repaired_df = build_clean_dataframe(raw_records, run_date=now_utc())
+    repaired_df = repair_clean_dataset_from_raw(
+        raw_records_path=paths.raw_records_json,
+        run_date=now_utc(),
+        csv_path=paths.repaired_clean_csv,
+        json_path=paths.repaired_clean_json,
+        cleaning_report_path=paths.repaired_clean_csv.with_name("cleaning_report_repaired.json"),
+    )
 
     if repaired_df.empty:
         raise RuntimeError("Repaired dataset is empty.")
 
-    write_csv(repaired_df, paths.repaired_clean_csv)
-    write_json(paths.repaired_clean_json, _records_for_json(repaired_df))
+    recovery_evidence = build_recovery_evidence(
+        raw_records_path=paths.raw_records_json,
+        repaired_json_path=paths.repaired_clean_json,
+        corruption_log_path=paths.corruption_log,
+        output_path=paths.corruption_log.with_name("recovery_log.json"),
+    )
+    if not recovery_evidence["all_checks_passed"]:
+        raise RuntimeError("Repair evidence did not prove that every corruption target was restored.")
 
     # 6. Collection riêng: papers-repaired.
     print("Building repaired embedding index...")
@@ -150,7 +177,12 @@ def main() -> None:
         repaired_quality=repaired_quality,
         corrupted_freshness=corrupted_freshness,
         repaired_freshness=repaired_freshness,
-
+        baseline_quality=(
+            read_json(paths.quality_dir / "baseline-quality.json")
+            if (paths.quality_dir / "baseline-quality.json").exists()
+            else None
+        ),
+        baseline_freshness=read_json(paths.freshness_report) if paths.freshness_report.exists() else None,
     )
 
     print("\n=== Corruption flow completed ===")

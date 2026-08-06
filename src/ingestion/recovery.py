@@ -79,8 +79,13 @@ def build_recovery_evidence(
                 }
             )
 
+    try:
+        recovery_source = str(raw_records_path.resolve().relative_to(Path(output_path).resolve().parents[2]))
+    except ValueError:
+        recovery_source = raw_records_path.name
+
     payload = {
-        "recovery_source": str(raw_records_path),
+        "recovery_source": recovery_source,
         "recovery_source_sha256": hashlib.sha256(raw_records_path.read_bytes()).hexdigest(),
         "raw_record_count": len(raw_records),
         "repaired_record_count": len(repaired_records),
