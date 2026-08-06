@@ -1,8 +1,8 @@
 {
-  "report_name": "baseline_quality",
-  "generated_at": "2026-08-06T09:22:34.780996+00:00",
+  "report_name": "corrupted_quality",
+  "generated_at": "2026-08-06T09:27:49.119383+00:00",
   "total_rows": 24,
-  "passed": true,
+  "passed": false,
   "checks": {
     "row_count": {
       "passed": true,
@@ -37,8 +37,8 @@
       "expected": "zero null or blank paper_id values"
     },
     "paper_id_unique": {
-      "passed": true,
-      "observed": 0,
+      "passed": false,
+      "observed": 2,
       "expected": "zero duplicate nonblank paper_id values"
     },
     "title_not_null": {
@@ -47,8 +47,8 @@
       "expected": "zero null or blank title values"
     },
     "summary_min_length": {
-      "passed": true,
-      "observed": 0,
+      "passed": false,
+      "observed": 2,
       "expected": "every summary has at least 20 characters"
     },
     "age_days_valid": {
@@ -57,9 +57,9 @@
       "expected": "every age_days value is a non-negative number"
     },
     "freshness_threshold": {
-      "passed": true,
+      "passed": false,
       "observed": {
-        "stale_rows": 0,
+        "stale_rows": 1,
         "threshold_days": 180
       },
       "expected": "zero records older than the configured freshness threshold"

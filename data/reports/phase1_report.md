@@ -7,10 +7,10 @@
 - **max_results_requested:** 24
 - **raw_record_count:** 24
 - **clean_record_count:** 24
-- **raw_records_path:** E:\AIvinuni\labai\Day10\K4_Day10_Data-Pipeline-Data-Observability\data\raw\crossref_records.json
-- **clean_csv_path:** E:\AIvinuni\labai\Day10\K4_Day10_Data-Pipeline-Data-Observability\data\clean\papers_clean.csv
-- **embedding_manifest_path:** E:\AIvinuni\labai\Day10\K4_Day10_Data-Pipeline-Data-Observability\data\embeddings\papers_embeddings.json
-- **test_set_path:** E:\AIvinuni\labai\Day10\K4_Day10_Data-Pipeline-Data-Observability\data\eval\test_set.json
+- **raw_records_path:** /home/linux-mint-cb303/Desktop/AI_Thuc_Chien/Lab/K4_Day10_Nemo_Pipeline_Observability/data/raw/crossref_records.json
+- **clean_csv_path:** /home/linux-mint-cb303/Desktop/AI_Thuc_Chien/Lab/K4_Day10_Nemo_Pipeline_Observability/data/clean/papers_clean.csv
+- **embedding_manifest_path:** /home/linux-mint-cb303/Desktop/AI_Thuc_Chien/Lab/K4_Day10_Nemo_Pipeline_Observability/data/embeddings/papers_embeddings.json
+- **test_set_path:** /home/linux-mint-cb303/Desktop/AI_Thuc_Chien/Lab/K4_Day10_Nemo_Pipeline_Observability/data/eval/test_set.json
 
 ## Evaluation metrics
 | Metric | Baseline |

@@ -1,6 +1,6 @@
 {
-  "report_name": "baseline_quality",
-  "generated_at": "2026-08-06T09:22:34.780996+00:00",
+  "report_name": "repaired_quality",
+  "generated_at": "2026-08-06T09:27:56.125411+00:00",
   "total_rows": 24,
   "passed": true,
   "checks": {
