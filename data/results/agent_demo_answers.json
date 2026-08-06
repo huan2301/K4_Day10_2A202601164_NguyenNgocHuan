@@ -1,0 +1,53 @@
+[
+  {
+    "question": "What is the main contribution of 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation'?",
+    "ground_truth": "Summary In high-risk industrial settings, leveraging large language models (LLMs) for automated accident analysis and generating safety reports has emerged as an efficient workflow.",
+    "answer": "Summary In high-risk industrial settings, leveraging large language models (LLMs) for automated accident analysis and generating safety reports has emerged as an efficient workflow.",
+    "retrieved_doc_ids": [
+      "10.2118/234689-pa",
+      "10.21203/rs.3.rs-9770645/v1",
+      "10.55041/isjem07213",
+      "10.21203/rs.3.rs-9882260/v1"
+    ],
+    "retrieved_titles": [
+      "SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation",
+      "Adapting Large Language Models for Low-Resource Regulated Domains: A Fine-Tuning and Retrieval-Augmented Generation Approach to Insurance Information Delivery in Kenya",
+      "Speculative Retrieval-Augmented Generation for Cost-Efficient Large Language Model Inference",
+      "Operationalizing Reliability Gaps in Large Language Models: A Semi-Systematic Evidence Map of Reasoning, Factuality, Evaluation, and Retrieval-Augmented Generation"
+    ]
+  },
+  {
+    "question": "Who authored 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation'?",
+    "ground_truth": "Qianwen Cao, Chiyu Zhang, Junxiong Ning, Gongru Li",
+    "answer": "Qianwen Cao, Chiyu Zhang, Junxiong Ning, Gongru Li",
+    "retrieved_doc_ids": [
+      "10.2118/234689-pa",
+      "10.55041/isjem07213",
+      "10.21203/rs.3.rs-9770645/v1",
+      "10.20944/preprints202604.0339.v1"
+    ],
+    "retrieved_titles": [
+      "SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation",
+      "Speculative Retrieval-Augmented Generation for Cost-Efficient Large Language Model Inference",
+      "Adapting Large Language Models for Low-Resource Regulated Domains: A Fine-Tuning and Retrieval-Augmented Generation Approach to Insurance Information Delivery in Kenya",
+      "Retrieval-Augmented Large Language Model Agents for Automated Scientific Literature Review Generation"
+    ]
+  },
+  {
+    "question": "When was 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation' published?",
+    "ground_truth": "2026-08-01",
+    "answer": "2026-08-01",
+    "retrieved_doc_ids": [
+      "10.2118/234689-pa",
+      "10.21203/rs.3.rs-9770645/v1",
+      "10.55041/isjem07213",
+      "10.21203/rs.3.rs-9882260/v1"
+    ],
+    "retrieved_titles": [
+      "SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation",
+      "Adapting Large Language Models for Low-Resource Regulated Domains: A Fine-Tuning and Retrieval-Augmented Generation Approach to Insurance Information Delivery in Kenya",
+      "Speculative Retrieval-Augmented Generation for Cost-Efficient Large Language Model Inference",
+      "Operationalizing Reliability Gaps in Large Language Models: A Semi-Systematic Evidence Map of Reasoning, Factuality, Evaluation, and Retrieval-Augmented Generation"
+    ]
+  }
+]

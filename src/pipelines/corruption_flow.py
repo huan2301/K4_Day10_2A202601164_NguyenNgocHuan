@@ -12,7 +12,6 @@ from observability.quality import build_freshness_report, run_data_quality_check
 from observability.reporting import generate_corruption_report
 from retrieval.index import LocalEmbeddingIndex
 
-
 def _records_for_json(df: pd.DataFrame) -> list[dict]:
     """Chuyển DataFrame sang dữ liệu JSON an toàn."""
     safe_df = df.copy()
@@ -151,6 +150,7 @@ def main() -> None:
         repaired_quality=repaired_quality,
         corrupted_freshness=corrupted_freshness,
         repaired_freshness=repaired_freshness,
+
     )
 
     print("\n=== Corruption flow completed ===")
